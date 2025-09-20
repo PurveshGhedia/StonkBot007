@@ -8,18 +8,33 @@ import yfinance as yf
 # IMPORTANT: Fill in these values from your Google Cloud project.
 # Before running, authenticate with gcloud: gcloud auth application-default login
 
-PROJECT_ID = "your-gcp-project-id"
-REGION = "asia-south1"  # e.g., "asia-south1" for Mumbai
-GCS_BUCKET_NAME = "aivest-hackathon-bucket"
+# PROJECT_ID = "stonkbot007"
+# REGION = "asia-south1"  # e.g., "asia-south1" for Mumbai
+# GCS_BUCKET_NAME = "stonkbot007"
 
-# Get these from the Vertex AI -> Vector Search console
-# The numeric ID of the index
-INDEX_ID = "projects/131196170322/locations/asia-south1/indexEndpoints/3144444925764960256"
-ENDPOINT_ID = "3144444925764960256"  # The numeric ID of the endpoint
+# # Get these from the Vertex AI -> Vector Search console
+# # The numeric ID of the index
+# INDEX_ID = "projects/131196170322/locations/asia-south1/indexEndpoints/3144444925764960256"
+# ENDPOINT_ID = "3144444925764960256"  # The numeric ID of the endpoint
 
-# When you deploy your index to an endpoint, you give that deployment an ID.
-# The ID of the DEPLOYED index on the endpoint
+# # When you deploy your index to an endpoint, you give that deployment an ID.
+# # The ID of the DEPLOYED index on the endpoint
+# DEPLOYED_INDEX_ID = "stonkbot007"
+
+# --- CONFIGURATION ---
+PROJECT_ID = "stonkbot007"
+REGION = "asia-south1"
+GCS_BUCKET_NAME = "stonkbot007"
+
+# The full resource name of the index
+INDEX_ID = "projects/stonkbot007/locations/asia-south1/indexes/680870376477032448"
+
+# The NUMERIC ID of the endpoint (from the error message)
+ENDPOINT_ID = "3144444925764960256"
+
+# The name of the deployment from your screenshot
 DEPLOYED_INDEX_ID = "stonkbot007"
+# ---------------------
 # ---------------------
 
 # --- 1. DEFINE THE TOOLS THE AGENT CAN USE ---
