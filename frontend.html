@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fin-Analyze | Secure Login</title>
+    <title>StonkBot | Secure Login</title> <!-- Title updated in browser tab -->
     <!-- Google Fonts for better typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,15 @@
 
         /* --- HEADER & LOGO --- */
         .header {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem; /* Adjusted margin */
+        }
+        
+        /* --- NEW: STYLING FOR THE LOGO --- */
+        .logo-img {
+            width: 120px; /* Controls the size of the image */
+            height: 120px;
+            margin-bottom: 1rem; /* Space between image and title */
+            border-radius: 10px; /* Optional: rounds the corners slightly */
         }
 
         .header h1 {
@@ -139,7 +147,7 @@
         .portfolio ul {
             list-style-type: none;
             padding: 0;
-            max-height: 300px; /* Add scroll for long portfolios */
+            max-height: 300px;
             overflow-y: auto;
         }
 
@@ -172,7 +180,11 @@
         <!-- Login Form -->
         <div id="login-section">
             <div class="header">
-                <h1>Fin-Analyze</h1>
+                <!-- NEW: Image added here -->
+                <img src="stonkbot_logo.png" alt="StonkBot Logo" class="logo-img">
+                
+                <!-- UPDATED: Title changed -->
+                <h1>StonkBot</h1>
                 <p>Securely access your financial portfolio.</p>
             </div>
             <form id="login-form">
@@ -199,37 +211,24 @@
     </div>
 
     <script>
-        // --- NEW: Simulated User Data with Client Names and Portfolios ---
+        // --- User Data and JavaScript Logic (No changes needed here) ---
         const users = {
             "priya": {
                 password: "password123",
                 client_name: "Priya Sharma",
-                portfolio: {
-                    "AAPL": 25, "MSFT": 15, "INFY.NS": 100, "HDFCBANK.NS": 50,
-                    "RELIANCE.NS": 30, "TATAMOTORS.NS": 150, "SUNPHARMA.NS": 80,
-                    "V": 20, "NVDA": 10
-                }
+                portfolio: { "AAPL": 25, "MSFT": 15, "INFY.NS": 100, "HDFCBANK.NS": 50, "RELIANCE.NS": 30, "TATAMOTORS.NS": 150, "SUNPHARMA.NS": 80, "V": 20, "NVDA": 10 }
             },
             "rohan": {
                 password: "password123",
                 client_name: "Rohan Kapoor",
-                portfolio: {
-                    "GOOGL": 10, "AMZN": 5, "TCS.NS": 75, "ICICIBANK.NS": 200,
-                    "RELIANCE.NS": 40, "HINDUNILVR.NS": 60, "JPM": 30, "TSLA": 12
-                }
+                portfolio: { "GOOGL": 10, "AMZN": 5, "TCS.NS": 75, "ICICIBANK.NS": 200, "RELIANCE.NS": 40, "HINDUNILVR.NS": 60, "JPM": 30, "TSLA": 12 }
             },
             "ananya": {
                 password: "password123",
                 client_name: "Ananya Reddy",
-                portfolio: {
-                    "MSFT": 30, "NVDA": 20, "TSLA": 18, "INFY.NS": 120,
-                    "HDFCBANK.NS": 80, "ICICIBANK.NS": 150, "RELIANCE.NS": 25,
-                    "SUNPHARMA.NS": 100, "BRK-B": 5, "XOM": 50
-                }
+                portfolio: { "MSFT": 30, "NVDA": 20, "TSLA": 18, "INFY.NS": 120, "HDFCBANK.NS": 80, "ICICIBANK.NS": 150, "RELIANCE.NS": 25, "SUNPHARMA.NS": 100, "BRK-B": 5, "XOM": 50 }
             }
         };
-
-        // --- DOM Elements ---
         const loginSection = document.getElementById('login-section');
         const portfolioSection = document.getElementById('portfolio-section');
         const loginForm = document.getElementById('login-form');
@@ -237,69 +236,44 @@
         const portfolioHeader = document.getElementById('portfolio-header');
         const portfolioList = document.getElementById('portfolio-list');
         const logoutButton = document.getElementById('logout-button');
-
-        // --- UPDATED Functions ---
-        /**
-         * Simulates fetching a user's data.
-         * Returns an object with the client name and portfolio on success.
-         */
         function fetchUserData(username, password) {
-            const user = users[username.toLowerCase()]; // Make username case-insensitive
+            const user = users[username.toLowerCase()];
             if (user && user.password === password) {
-                return {
-                    client_name: user.client_name,
-                    portfolio: user.portfolio
-                };
+                return { client_name: user.client_name, portfolio: user.portfolio };
             }
             return null;
         }
-
-        /**
-         * Displays the user's portfolio.
-         * MODIFIED to handle the new object-based portfolio format.
-         */
         function displayPortfolio(clientName, portfolio) {
             loginSection.style.display = 'none';
             portfolioSection.style.display = 'block';
             portfolioHeader.textContent = `Welcome, ${clientName}!`;
-
-            portfolioList.innerHTML = ''; // Clear previous entries
-            // Loop through the portfolio object
+            portfolioList.innerHTML = '';
             for (const [stock, shares] of Object.entries(portfolio)) {
                 const listItem = document.createElement('li');
                 listItem.textContent = `${shares} shares of ${stock}`;
                 portfolioList.appendChild(listItem);
             }
         }
-
-        /**
-         * Shows the login form and hides the portfolio.
-         */
         function showLogin() {
             portfolioSection.style.display = 'none';
             loginSection.style.display = 'block';
             loginForm.reset();
             errorMessage.style.display = 'none';
         }
-
-        // --- Event Listeners ---
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const username = loginForm.username.value;
             const password = loginForm.password.value;
             const userData = fetchUserData(username, password);
-
             if (userData) {
                 displayPortfolio(userData.client_name, userData.portfolio);
             } else {
                 errorMessage.style.display = 'block';
             }
         });
-
         logoutButton.addEventListener('click', () => {
             showLogin();
         });
-
     </script>
 </body>
 </html>
