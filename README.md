@@ -1,4 +1,4 @@
-# StonkBot007 - Portfolio Scanner Frontend
+# StonkBot007 - Portfolio Scanner 
 
 A comprehensive web-based portfolio scanning and analysis platform that provides real-time insights on your stock holdings based on news sentiment analysis.
 
