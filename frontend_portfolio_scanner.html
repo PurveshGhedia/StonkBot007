@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StonkBot007 - Portfolio Scanner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #004d40;
+            --primary-hover: #00796b;
+            --secondary-color: #26a69a;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --background-color: #f8f9fa;
+            --container-bg: #ffffff;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-section {
+            background: var(--container-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .dashboard-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--container-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .portfolio-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .portfolio-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--background-color);
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        .stock-symbol {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .stock-shares {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .analysis-section {
+            background: var(--container-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .analysis-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .analysis-results {
+            display: none;
+        }
+
+        .stock-analysis {
+            background: var(--background-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .stock-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .sentiment-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .sentiment-positive {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .sentiment-negative {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .sentiment-neutral {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .recommendation {
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .recommendation.buy {
+            color: var(--success-color);
+        }
+
+        .recommendation.sell {
+            color: var(--danger-color);
+        }
+
+        .recommendation.hold {
+            color: var(--warning-color);
+        }
+
+        .analysis-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .portfolio-summary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dashboard-controls {
+                justify-content: center;
+            }
+
+            .analysis-controls {
+                flex-direction: column;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="stonkbot_logo.png" alt="StonkBot Logo" class="logo-img">
+            <h1>🤖 StonkBot007</h1>
+            <p>Portfolio Scanner & Stock Analysis Platform</p>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="login-section">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="stonkbot_logo.png" alt="StonkBot Logo" class="logo-img" style="width: 60px; height: 60px;">
+                <h2 style="color: var(--primary-color); margin-top: 1rem;">Secure Login</h2>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                    Demo users: priya, rohan, ananya (password: password123)
+                </p>
+                <div id="login-error" class="error-message" style="display: none;">
+                    Invalid username or password.
+                </div>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title" id="welcome-message">Welcome!</h2>
+                <div class="dashboard-controls">
+                    <button id="scan-portfolio-btn" class="btn btn-success">🔍 Scan Portfolio</button>
+                    <button id="refresh-news-btn" class="btn btn-warning">📰 Refresh News</button>
+                    <button id="logout-btn" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Summary -->
+            <div class="portfolio-summary">
+                <h3>Portfolio Overview</h3>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-stocks">0</div>
+                        <div class="stat-label">Total Stocks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-shares">0</div>
+                        <div class="stat-label">Total Shares</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="analysis-status">-</div>
+                        <div class="stat-label">Analysis Status</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Portfolio Holdings -->
+                <div class="card">
+                    <h3>📊 Your Holdings</h3>
+                    <ul id="portfolio-list" class="portfolio-list"></ul>
+                </div>
+
+                <!-- Analysis Controls -->
+                <div class="card">
+                    <h3>🔍 Analysis Controls</h3>
+                    <div class="analysis-controls">
+                        <button id="analyze-stocks-btn" class="btn btn-success" disabled>
+                            Analyze Portfolio Stocks
+                        </button>
+                        <button id="view-news-btn" class="btn btn-warning" disabled>
+                            View Recent News
+                        </button>
+                    </div>
+                    <div id="analysis-progress" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing your portfolio stocks...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Results -->
+            <div id="analysis-results" class="analysis-section analysis-results">
+                <h3>📈 Portfolio Analysis Results</h3>
+                <div id="analysis-content"></div>
+            </div>
+
+            <!-- News Section -->
+            <div id="news-section" class="analysis-section" style="display: none;">
+                <h3>📰 Recent Financial News</h3>
+                <div id="news-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User data with portfolios
+        const users = {
+            "priya": {
+                password: "password123",
+                client_name: "Priya Sharma",
+                portfolio: {
+                    "RELIANCE": 30,
+                    "TCS": 25,
+                    "HDFC": 50,
+                    "INFOSYS": 100,
+                    "ICICI": 200,
+                    "KOTAK": 80,
+                    "ITC": 60,
+                    "BHARTIARTL": 40,
+                    "SUNPHARMA": 80,
+                    "TATAMOTORS": 150
+                }
+            },
+            "rohan": {
+                password: "password123",
+                client_name: "Rohan Kapoor",
+                portfolio: {
+                    "RELIANCE": 40,
+                    "TCS": 75,
+                    "HDFC": 200,
+                    "INFOSYS": 120,
+                    "ICICI": 150,
+                    "KOTAK": 100,
+                    "ITC": 80,
+                    "BHARTIARTL": 60,
+                    "SUNPHARMA": 100,
+                    "TATAMOTORS": 200,
+                    "HINDUNILVR": 60,
+                    "ASIANPAINT": 40
+                }
+            },
+            "ananya": {
+                password: "password123",
+                client_name: "Ananya Reddy",
+                portfolio: {
+                    "RELIANCE": 25,
+                    "TCS": 50,
+                    "HDFC": 80,
+                    "INFOSYS": 120,
+                    "ICICI": 150,
+                    "KOTAK": 120,
+                    "ITC": 100,
+                    "BHARTIARTL": 80,
+                    "SUNPHARMA": 100,
+                    "TATAMOTORS": 180,
+                    "HINDUNILVR": 80,
+                    "ASIANPAINT": 60,
+                    "MARUTI": 50,
+                    "TITAN": 40
+                }
+            }
+        };
+
+        // Current user data
+        let currentUser = null;
+        let analysisResults = null;
+
+        // DOM elements
+        const loginSection = document.getElementById('login-section');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const portfolioList = document.getElementById('portfolio-list');
+        const totalStocks = document.getElementById('total-stocks');
+        const totalShares = document.getElementById('total-shares');
+        const analysisStatus = document.getElementById('analysis-status');
+        const scanPortfolioBtn = document.getElementById('scan-portfolio-btn');
+        const analyzeStocksBtn = document.getElementById('analyze-stocks-btn');
+        const viewNewsBtn = document.getElementById('view-news-btn');
+        const refreshNewsBtn = document.getElementById('refresh-news-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const analysisProgress = document.getElementById('analysis-progress');
+        const analysisResultsDiv = document.getElementById('analysis-results');
+        const analysisContent = document.getElementById('analysis-content');
+        const newsSection = document.getElementById('news-section');
+        const newsContent = document.getElementById('news-content');
+
+        // Event listeners
+        loginForm.addEventListener('submit', handleLogin);
+        scanPortfolioBtn.addEventListener('click', scanPortfolio);
+        analyzeStocksBtn.addEventListener('click', analyzePortfolioStocks);
+        viewNewsBtn.addEventListener('click', viewNews);
+        refreshNewsBtn.addEventListener('click', refreshNews);
+        logoutBtn.addEventListener('click', logout);
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const user = users[username.toLowerCase()];
+            if (user && user.password === password) {
+                currentUser = user;
+                showDashboard();
+            } else {
+                loginError.style.display = 'block';
+            }
+        }
+
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboard.style.display = 'block';
+            loginError.style.display = 'none';
+            
+            welcomeMessage.textContent = `Welcome, ${currentUser.client_name}!`;
+            displayPortfolio();
+            updatePortfolioSummary();
+        }
+
+        function displayPortfolio() {
+            portfolioList.innerHTML = '';
+            for (const [symbol, shares] of Object.entries(currentUser.portfolio)) {
+                const li = document.createElement('li');
+                li.className = 'portfolio-item';
+                li.innerHTML = `
+                    <span class="stock-symbol">${symbol}</span>
+                    <span class="stock-shares">${shares} shares</span>
+                `;
+                portfolioList.appendChild(li);
+            }
+        }
+
+        function updatePortfolioSummary() {
+            const stocks = Object.keys(currentUser.portfolio);
+            const totalSharesCount = Object.values(currentUser.portfolio).reduce((sum, shares) => sum + shares, 0);
+            
+            totalStocks.textContent = stocks.length;
+            totalShares.textContent = totalSharesCount;
+            analysisStatus.textContent = analysisResults ? 'Completed' : 'Pending';
+        }
+
+        async function scanPortfolio() {
+            analyzeStocksBtn.disabled = true;
+            viewNewsBtn.disabled = true;
+            analysisProgress.style.display = 'block';
+            analysisResultsDiv.style.display = 'none';
+            newsSection.style.display = 'none';
+
+            try {
+                // Simulate API call to portfolio scanner
+                const response = await fetch('/api/scan-portfolio', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        stocks: Object.keys(currentUser.portfolio)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to scan portfolio');
+                }
+
+                analysisResults = await response.json();
+                displayAnalysisResults();
+                
+            } catch (error) {
+                // Fallback to mock data for demonstration
+                console.log('Using mock data for demonstration');
+                analysisResults = generateMockAnalysis();
+                displayAnalysisResults();
+            }
+
+            analyzeStocksBtn.disabled = false;
+            viewNewsBtn.disabled = false;
+            analysisProgress.style.display = 'none';
+            updatePortfolioSummary();
+        }
+
+        function generateMockAnalysis() {
+            const stocks = Object.keys(currentUser.portfolio);
+            const analysis = {
+                portfolio_sentiment: 'positive',
+                total_stocks_analyzed: stocks.length,
+                sentiment_breakdown: {
+                    positive: Math.floor(stocks.length * 0.4),
+                    negative: Math.floor(stocks.length * 0.2),
+                    neutral: Math.floor(stocks.length * 0.4)
+                },
+                stock_insights: stocks.map(symbol => ({
+                    symbol: symbol,
+                    company: getCompanyName(symbol),
+                    mentions: Math.floor(Math.random() * 10) + 1,
+                    sentiment: ['positive', 'negative', 'neutral'][Math.floor(Math.random() * 3)],
+                    confidence: Math.random() * 0.8 + 0.2,
+                    recommendation: ['BUY', 'SELL', 'HOLD'][Math.floor(Math.random() * 3)],
+                    risk_level: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
+                    price_outlook: ['Bullish', 'Bearish', 'Neutral'][Math.floor(Math.random() * 3)],
+                    key_factors: ['Strong earnings', 'Market volatility', 'Sector growth'][Math.floor(Math.random() * 3)],
+                    action_items: ['Monitor closely', 'Consider adding', 'Hold position'][Math.floor(Math.random() * 3)]
+                }))
+            };
+            return analysis;
+        }
+
+        function getCompanyName(symbol) {
+            const companyNames = {
+                'RELIANCE': 'Reliance Industries',
+                'TCS': 'Tata Consultancy Services',
+                'HDFC': 'HDFC Bank',
+                'INFOSYS': 'Infosys',
+                'ICICI': 'ICICI Bank',
+                'KOTAK': 'Kotak Mahindra Bank',
+                'ITC': 'ITC Limited',
+                'BHARTIARTL': 'Bharti Airtel',
+                'SUNPHARMA': 'Sun Pharmaceutical',
+                'TATAMOTORS': 'Tata Motors',
+                'HINDUNILVR': 'Hindustan Unilever',
+                'ASIANPAINT': 'Asian Paints',
+                'MARUTI': 'Maruti Suzuki',
+                'TITAN': 'Titan Company'
+            };
+            return companyNames[symbol] || symbol;
+        }
+
+        function displayAnalysisResults() {
+            if (!analysisResults) return;
+
+            analysisResultsDiv.style.display = 'block';
+            analysisContent.innerHTML = '';
+
+            // Portfolio overview
+            const overview = document.createElement('div');
+            overview.className = 'card';
+            overview.innerHTML = `
+                <h3>📊 Portfolio Overview</h3>
+                <div class="analysis-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Overall Sentiment</div>
+                        <div class="detail-value sentiment-${analysisResults.portfolio_sentiment}">
+                            ${analysisResults.portfolio_sentiment.toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Stocks Analyzed</div>
+                        <div class="detail-value">${analysisResults.total_stocks_analyzed}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Positive Stocks</div>
+                        <div class="detail-value">${analysisResults.sentiment_breakdown.positive}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Negative Stocks</div>
+                        <div class="detail-value">${analysisResults.sentiment_breakdown.negative}</div>
+                    </div>
+                </div>
+            `;
+            analysisContent.appendChild(overview);
+
+            // Individual stock analysis
+            analysisResults.stock_insights.forEach(stock => {
+                const stockDiv = document.createElement('div');
+                stockDiv.className = 'stock-analysis';
+                stockDiv.innerHTML = `
+                    <div class="stock-header">
+                        <div class="stock-name">${stock.symbol} - ${stock.company}</div>
+                        <div class="sentiment-badge sentiment-${stock.sentiment}">
+                            ${stock.sentiment}
+                        </div>
+                    </div>
+                    <div class="recommendation ${stock.recommendation.toLowerCase()}">
+                        ${stock.recommendation} - ${stock.recommendation === 'BUY' ? 'Consider adding to portfolio' : 
+                          stock.recommendation === 'SELL' ? 'Consider reducing position' : 'Maintain current position'}
+                    </div>
+                    <div class="analysis-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Confidence</div>
+                            <div class="detail-value">${(stock.confidence * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Risk Level</div>
+                            <div class="detail-value">${stock.risk_level.toUpperCase()}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Price Outlook</div>
+                            <div class="detail-value">${stock.price_outlook}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Key Factor</div>
+                            <div class="detail-value">${stock.key_factors}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <div class="detail-label">Action Items</div>
+                        <div class="detail-value">${stock.action_items}</div>
+                    </div>
+                `;
+                analysisContent.appendChild(stockDiv);
+            });
+        }
+
+        function analyzePortfolioStocks() {
+            if (!analysisResults) {
+                alert('Please scan your portfolio first!');
+                return;
+            }
+            analysisResultsDiv.style.display = 'block';
+            newsSection.style.display = 'none';
+        }
+
+        function viewNews() {
+            newsSection.style.display = 'block';
+            analysisResultsDiv.style.display = 'none';
+            
+            // Mock news data
+            const mockNews = [
+                {
+                    title: "Reliance Industries Reports Strong Q3 Results",
+                    content: "Reliance Industries reported a 15% increase in quarterly revenue, beating analyst expectations.",
+                    sentiment: "positive"
+                },
+                {
+                    title: "TCS Announces New Digital Transformation Initiatives",
+                    content: "Tata Consultancy Services unveiled new AI-powered solutions for enterprise clients.",
+                    sentiment: "positive"
+                },
+                {
+                    title: "Banking Sector Faces Interest Rate Challenges",
+                    content: "Rising interest rates are putting pressure on banking sector margins.",
+                    sentiment: "negative"
+                },
+                {
+                    title: "Pharmaceutical Companies See Growth in Export Markets",
+                    content: "Indian pharma companies are expanding their presence in international markets.",
+                    sentiment: "positive"
+                }
+            ];
+
+            newsContent.innerHTML = '';
+            mockNews.forEach(article => {
+                const articleDiv = document.createElement('div');
+                articleDiv.className = 'card';
+                articleDiv.innerHTML = `
+                    <h4>${article.title}</h4>
+                    <p>${article.content}</p>
+                    <div class="sentiment-badge sentiment-${article.sentiment}" style="display: inline-block; margin-top: 0.5rem;">
+                        ${article.sentiment}
+                    </div>
+                `;
+                newsContent.appendChild(articleDiv);
+            });
+        }
+
+        function refreshNews() {
+            viewNews();
+        }
+
+        function logout() {
+            currentUser = null;
+            analysisResults = null;
+            dashboard.style.display = 'none';
+            loginSection.style.display = 'block';
+            analysisResultsDiv.style.display = 'none';
+            newsSection.style.display = 'none';
+            loginForm.reset();
+        }
+
+        // Initialize
+        updatePortfolioSummary();
+    </script>
+</body>
+</html>
